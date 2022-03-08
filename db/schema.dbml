@@ -1,0 +1,58 @@
+Table users {
+  id varchar(64) [pk]
+  login_id varchar(128) [not null, unique]
+  password varchar(128) [not null]
+  status varchar(32) [not null]
+  created_at timestampz [not null, default: `now()`]
+  updated_at timestampz [not null, default: `now()`]
+}
+
+Table profiles {
+  user_id varchar [ref: - users.id, NOT null]
+  first_name varchar(64) [not null]
+  last_name varchar(64)
+  dob TIMESTAMP
+  address_line1 varchar(64)
+  address_line2 varchar(64)
+  city varchar(64)
+  state varchar(64)
+  country varchar(64)
+  postal_code varchar(64)
+  primary_phone VARCHAR(20)
+  secondary_phone VARCHAR(20)
+  primary_email VARCHAR(128)
+  secondary_email VARCHAR(128)
+  created_at TIMESTAMPZ [NOT NULL, default: `now()`]
+  updated_at TIMESTAMPZ [NOT NULL, default: `now()`]
+}
+
+Table permissions {
+  id VARCHAR (64) [PRIMARY KEY]
+  name VARCHAR(128) [NOT NULL, UNIQUE]
+  description VARCHAR(128) [NOT NULL]
+  resource_name VARCHAR(128)
+  allowed_read BOOLEAN [DEFAULT: FALSE]
+  allowed_create BOOLEAN [DEFAULT: FALSE]
+  allowed_update BOOLEAN [DEFAULT: FALSE]
+  allowed_delete BOOLEAN [DEFAULT: FALSE]
+  created_at TIMESTAMP [NOT NULL, default: `now()`]
+  updated_at TIMESTAMP [NOT NULL, default: `now()`]
+}
+
+
+Table roles {
+  id VARCHAR (64) [PRIMARY KEY]
+  name VARCHAR(128) [NOT NULL, UNIQUE]
+  description VARCHAR(128) [NOT NULL]
+  is_active BOOLEAN [DEFAULT: FALSE]
+  permission_id VARCHAR(64) [ref: > permissions.id, NOT null]
+  created_at TIMESTAMP [NOT NULL, DEFAULT: `now()`]
+  updated_at TIMESTAMP [NOT NULL, DEFAULT: `now()`]
+}
+
+Table user_roles {
+  user_id VARCHAR [ref: > users.id, NOT null]
+  role_id VARCHAR [ref: > roles.id, NOT null]
+  created_at TIMESTAMPZ [NOT NULL, DEFAULT: `now()`]
+  updated_at TIMESTAMPZ [NOT NULL, DEFAULT: `now()`]
+}
