@@ -1,0 +1,9 @@
+auth:
+  database: postgres
+  plugins:
+    - username_password
+    - sso
+    - profile
+    - rbac
+    - otp
+    - kerberos

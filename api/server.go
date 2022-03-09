@@ -17,6 +17,12 @@ func NewServer(store *db.Store) *Server {
 		router: gin.Default(),
 	}
 
+	server.router.POST("/register", server.createUser)
+	server.router.GET("/login", server.loginUser)
+	server.router.GET("/verify", server.verifyUser)
+	server.router.GET("/updatePassword", server.updateUserPassword)
+	server.router.PUT("/updateStatus", server.updateUserStatus)
+
 	server.router.POST("/profiles", server.createProfile)
 	server.router.GET("/profiles/:id", server.getProfile)
 	server.router.GET("/profiles", server.listProfiles)

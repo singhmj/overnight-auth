@@ -8,6 +8,7 @@ import (
 
 type Querier interface {
 	CreateProfile(ctx context.Context, arg CreateProfileParams) (Profile, error)
+	CreateUser(ctx context.Context, arg CreateUserParams) (User, error)
 	DeleteUser(ctx context.Context, id string) error
 	GetProfile(ctx context.Context, userID string) (Profile, error)
 	GetUser(ctx context.Context, id string) (User, error)

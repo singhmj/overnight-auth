@@ -25,6 +25,9 @@ func Prepare(ctx context.Context, db DBTX) (*Queries, error) {
 	if q.createProfileStmt, err = db.PrepareContext(ctx, createProfile); err != nil {
 		return nil, fmt.Errorf("error preparing query CreateProfile: %w", err)
 	}
+	if q.createUserStmt, err = db.PrepareContext(ctx, createUser); err != nil {
+		return nil, fmt.Errorf("error preparing query CreateUser: %w", err)
+	}
 	if q.deleteUserStmt, err = db.PrepareContext(ctx, deleteUser); err != nil {
 		return nil, fmt.Errorf("error preparing query DeleteUser: %w", err)
 	}
@@ -57,6 +60,11 @@ func (q *Queries) Close() error {
 	if q.createProfileStmt != nil {
 		if cerr := q.createProfileStmt.Close(); cerr != nil {
 			err = fmt.Errorf("error closing createProfileStmt: %w", cerr)
+		}
+	}
+	if q.createUserStmt != nil {
+		if cerr := q.createUserStmt.Close(); cerr != nil {
+			err = fmt.Errorf("error closing createUserStmt: %w", cerr)
 		}
 	}
 	if q.deleteUserStmt != nil {
@@ -139,6 +147,7 @@ type Queries struct {
 	db                     DBTX
 	tx                     *sql.Tx
 	createProfileStmt      *sql.Stmt
+	createUserStmt         *sql.Stmt
 	deleteUserStmt         *sql.Stmt
 	getProfileStmt         *sql.Stmt
 	getUserStmt            *sql.Stmt
@@ -154,6 +163,7 @@ func (q *Queries) WithTx(tx *sql.Tx) *Queries {
 		db:                     tx,
 		tx:                     tx,
 		createProfileStmt:      q.createProfileStmt,
+		createUserStmt:         q.createUserStmt,
 		deleteUserStmt:         q.deleteUserStmt,
 		getProfileStmt:         q.getProfileStmt,
 		getUserStmt:            q.getUserStmt,
